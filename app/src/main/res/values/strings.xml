@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">shakeyWeight</string>
+    <string name="shake_the_weight">Shake the weight!</string>
+    <string name="times_shook">Times Shook:</string>
 </resources>
