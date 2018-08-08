@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.os.SystemClock;
 
 import org.w3c.dom.Text;
 
@@ -18,11 +19,14 @@ public class MainActivity extends AppCompatActivity {
     private int timesShook;
     private TextView counterText;
     private String counterString;
+    private long timeElapsedStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        resetTimeElapsed();//this may not be smart to do on onCreate
 
         timesShook = 0;//this will have to be changed later if we want to keep data to the next time you play.
 
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         shakeDetector = new ShakeDetector(options).start(this, new ShakeCallback() {
             @Override
             public void onShake() {
+                resetTimeElapsed();
                 timesShook++;
                 counterString = getString(R.string.times_shook) + timesShook;
                 counterText.setText(counterString);
@@ -47,13 +52,24 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("event", "onShake");
             }
         });
-
-
-
-
         //IF YOU WANT JUST IN BACKGROUND
         //this.shakeDetector = new ShakeDetector(options).start(this);
         //maybe important
-
     }
+
+    private void resetTimeElapsed(){//How do you make listeners
+        timeElapsedStart = System.currentTimeMillis();
+    }
+
+    private boolean isHotStreakEnded(int amountOfTime){//in millis
+        return true;
+    }
+
+    /*private void update(){ //I am almost 100% sure that this is wrong, future me watch https://www.youtube.com/watch?v=OojQitoAEXs for game loop
+        while(true) {
+            isHotStreakEnded(1000);
+            SystemClock.sleep(100);
+        }
+    }*/
+
 }
