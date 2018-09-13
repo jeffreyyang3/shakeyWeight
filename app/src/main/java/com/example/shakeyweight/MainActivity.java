@@ -1,5 +1,6 @@
 package com.example.shakeyweight;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,19 @@ public class MainActivity extends AppCompatActivity {
     private TextView counterText;
     private String counterString;
     private long timeElapsedStart;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.powerups:
+
+
+                startActivity(new Intent(this, powerupScreen.class));
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
