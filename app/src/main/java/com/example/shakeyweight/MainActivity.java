@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        global_vars gv = (global_vars) getApplicationContext();
 
         resetTimeElapsed();//this may not be smart to do on onCreate
 
