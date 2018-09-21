@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.os.SystemClock;
 
@@ -12,6 +15,8 @@ import org.w3c.dom.Text;
 import safety.com.br.android_shake_detector.core.ShakeCallback;
 import safety.com.br.android_shake_detector.core.ShakeDetector;
 import safety.com.br.android_shake_detector.core.ShakeOptions;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     //FIXME There is a problem with turning the screen sideways, the count gets restarted and the counter gets screwed up and counts to a multiple of the amount of times you turned it sideways.
@@ -21,11 +26,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView counterText;
     private String counterString;
     private long timeElapsedStart;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.signIn:
+                startActivity(new Intent(this, signInScreen.class));
+                return true;
+
             case R.id.powerups:
-
-
                 startActivity(new Intent(this, powerupScreen.class));
                 return true;
 
@@ -46,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         timesShook = 0;//this will have to be changed later if we want to keep data to the next time you play.
 
         counterText = (TextView) findViewById(R.id.shakeWeightCounterText);
-        counterString = getString(R.string.times_shook) + timesShook;
+        counterString = Integer.toString(timesShook);
+        //counterString = getString(R.string.times_shook) + timesShook;
         counterText.setText(counterString);
 
 
@@ -61,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
             public void onShake() {
                 resetTimeElapsed();
                 timesShook++;
-                counterString = getString(R.string.times_shook) + timesShook;
-                counterText.setText(counterString);
+                //counterString = getString(R.string.times_shook) + timesShook;
+                counterText.setText(Integer.toString(timesShook));
                 //ounterText.setText("bing bong");
                 Log.d("event", "onShake");
             }
@@ -70,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         //IF YOU WANT JUST IN BACKGROUND
         //this.shakeDetector = new ShakeDetector(options).start(this);
         //maybe important
+
+
     }
 
     private void resetTimeElapsed(){//How do you make listeners
