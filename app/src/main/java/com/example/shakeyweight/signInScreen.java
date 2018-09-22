@@ -5,10 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shakeyweight.MainActivity;
@@ -21,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class signInScreen extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword;
+
     private FirebaseAuth auth;
+    private TextView userInfo;
 
     private Button btnSignup, btnLogin, btnReset, logout;
 
@@ -30,7 +35,6 @@ public class signInScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
 
 
 
@@ -40,20 +44,59 @@ public class signInScreen extends AppCompatActivity {
 
 
 
+
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         logout = (Button) findViewById(R.id.logout);
+        userInfo = (TextView) findViewById(R.id.userInfo);
+
+
+
 
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
+
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
         //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        global_vars gv = (global_vars) getApplicationContext();
+        auth = gv.getAuth();
+
+
+        if (auth.getCurrentUser() != null) {
+
+            btnLogin.setVisibility(View.GONE);
+            logout.setVisibility(View.VISIBLE);
+            inputEmail.setVisibility(View.GONE);
+            inputPassword.setVisibility(View.GONE);
+            btnSignup.setVisibility(View.GONE);
+            btnReset.setVisibility(View.GONE);
+            userInfo.setVisibility(View.VISIBLE);
+            String email = auth.getCurrentUser().getEmail();
+
+            int index = email.indexOf('@');
+            userInfo.setText("Logged in as " + email.substring(0,index));
+
+
+        }
+        else{
+
+            btnLogin.setVisibility(View.VISIBLE);
+            logout.setVisibility(View.GONE);
+            inputEmail.setVisibility(View.VISIBLE);
+            inputPassword.setVisibility(View.VISIBLE);
+            btnSignup.setVisibility(View.VISIBLE);
+            btnReset.setVisibility(View.VISIBLE);
+            userInfo.setVisibility(View.GONE);
+
+        }
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 auth.signOut();
+                Intent intent = new Intent(signInScreen.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

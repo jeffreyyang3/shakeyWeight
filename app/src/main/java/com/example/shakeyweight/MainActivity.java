@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.os.SystemClock;
@@ -18,6 +19,8 @@ import safety.com.br.android_shake_detector.core.ShakeOptions;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
     //FIXME There is a problem with turning the screen sideways, the count gets restarted and the counter gets screwed up and counts to a multiple of the amount of times you turned it sideways.
 
@@ -26,9 +29,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView counterText;
     private String counterString;
     private long timeElapsedStart;
+    private FirebaseAuth auth;
+    private MenuItem signin, logout;
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -50,8 +58,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_main);
+
+
+
         global_vars gv = (global_vars) getApplicationContext();
+        gv.startAuth();
+        auth = gv.getAuth();
 
         resetTimeElapsed();//this may not be smart to do on onCreate
 
@@ -76,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 timesShook++;
                 //counterString = getString(R.string.times_shook) + timesShook;
                 counterText.setText(Integer.toString(timesShook));
-                //ounterText.setText("bing bong");
+                //counterText.setText("bing bong");
                 Log.d("event", "onShake");
             }
         });

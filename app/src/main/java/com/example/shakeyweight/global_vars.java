@@ -1,11 +1,22 @@
 package com.example.shakeyweight;
 import android.app.Application;
 import android.content.Context;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class global_vars extends Application{
     static int shakes;
     static int rate;
     static int amountOfShakerMod;
+    private FirebaseAuth auth;
+
+    public void startAuth(){
+        this.auth = FirebaseAuth.getInstance();
+    }
+    public FirebaseAuth getAuth(){
+        return this.auth;
+    }
+
     private static Application sApplication;
 
     public static Application getApplication() {
@@ -55,5 +66,7 @@ public class global_vars extends Application{
     public void addToAmountOfShakerMod(int amount){
         amountOfShakerMod+=amount;
     }
+
+
 
 }
