@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private long timeElapsedStart;
     private FirebaseAuth auth;
     private MenuItem signin, logout;
+    private global_vars gv;
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,22 +60,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        System.out.println("ONCREATE");
+
 
 
         setContentView(R.layout.activity_main);
 
 
 
-        global_vars gv = (global_vars) getApplicationContext();
+        gv = (global_vars) getApplicationContext();
         gv.startAuth();
+        gv.startDataBase();
         auth = gv.getAuth();
 
         resetTimeElapsed();//this may not be smart to do on onCreate
 
-        timesShook = 0;//this will have to be changed later if we want to keep data to the next time you play.
+
+
+
 
         counterText = (TextView) findViewById(R.id.shakeWeightCounterText);
-        counterString = Integer.toString(timesShook);
+        counterString = Integer.toString(gv.getShakes());
         //counterString = getString(R.string.times_shook) + timesShook;
         counterText.setText(counterString);
 
@@ -89,9 +95,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onShake() {
                 resetTimeElapsed();
-                timesShook++;
+                gv.addToShakes(1);
                 //counterString = getString(R.string.times_shook) + timesShook;
-                counterText.setText(Integer.toString(timesShook));
+                counterText.setText(Integer.toString(gv.getShakes()));
+                String email = gv.getAuth().getCurrentUser().getEmail();
+
+                int index;
+                if(email != null) {
+                    index = email.indexOf('@');
+                    User user = new User(gv.getShakes());
+                    //gv.getDatabaseInfo().child("users").child(email.substring(0,index)).
+                      //      child("shakes").setValue(gv.getShakes());
+                    gv.getDatabaseInfo().child("users").child(email.substring(0,index)).setValue(user);
+
+                }
                 //counterText.setText("bing bong");
                 Log.d("event", "onShake");
             }

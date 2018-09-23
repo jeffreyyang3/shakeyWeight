@@ -3,18 +3,27 @@ import android.app.Application;
 import android.content.Context;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class global_vars extends Application{
     static int shakes;
     static int rate;
     static int amountOfShakerMod;
     private FirebaseAuth auth;
+    private FirebaseDatabase firebaseInstance;
 
     public void startAuth(){
         this.auth = FirebaseAuth.getInstance();
     }
     public FirebaseAuth getAuth(){
         return this.auth;
+    }
+    public void startDataBase(){
+        this.firebaseInstance = FirebaseDatabase.getInstance();
+    }
+    public DatabaseReference getDatabaseInfo(){
+        return this.firebaseInstance.getReference();
     }
 
     private static Application sApplication;

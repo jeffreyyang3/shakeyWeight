@@ -27,6 +27,7 @@ public class signInScreen extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private TextView userInfo;
+    private global_vars gv;
 
     private Button btnSignup, btnLogin, btnReset, logout;
 
@@ -59,7 +60,7 @@ public class signInScreen extends AppCompatActivity {
         btnReset = (Button) findViewById(R.id.btn_reset_password);
 
         //Get Firebase auth instance
-        global_vars gv = (global_vars) getApplicationContext();
+        gv = (global_vars) getApplicationContext();
         auth = gv.getAuth();
 
 
@@ -143,8 +144,13 @@ public class signInScreen extends AppCompatActivity {
                                         Toast.makeText(signInScreen.this, "wrong", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+
+
                                     Intent intent = new Intent(signInScreen.this, MainActivity.class);
                                     startActivity(intent);
+
+
+
                                     finish();
                                 }
                             }
