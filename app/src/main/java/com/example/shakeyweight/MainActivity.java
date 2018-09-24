@@ -70,11 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("ONCREATE");
 
-
-
         setContentView(R.layout.activity_main);
-
-
 
         gv = (global_vars) getApplicationContext();
         gv.startAuth();
@@ -82,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
         auth = gv.getAuth();
 
         resetTimeElapsed();//this may not be smart to do on onCreate
-
-
-
-
 
         gv.setCounterText((TextView) findViewById(R.id.shakeWeightCounterText));
         counterString = Integer.toString(gv.getShakes());

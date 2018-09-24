@@ -21,14 +21,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name=".ShakeReceiver">
+
+        <receiver android:name=".ShakeReceiver"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="shake.detector" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".powerupScreen" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".powerupScreen"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,9 +44,16 @@
         </activity>
         <activity
             android:name=".signInScreen"
-            android:label="@string/title_activity_sign_in_screen" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".ResetPasswordActivity"></activity>
+            android:label="@string/title_activity_sign_in_screen"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".SignupActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".ResetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
+        </activity>
     </application>
 
 </manifest>
