@@ -16,4 +16,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to powerup screen -->
+    <string name="buy_for">Buy For:&#160;</string>
 </resources>
