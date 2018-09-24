@@ -20,6 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     //FIXME There is a problem with turning the screen sideways, the count gets restarted and the counter gets screwed up and counts to a multiple of the amount of times you turned it sideways.
@@ -55,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    protected void onDestroy(Bundle savedInstanceState){
+        super.onDestroy();
+        this.shakeDetector.destroy(getApplicationContext());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +87,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        counterText = (TextView) findViewById(R.id.shakeWeightCounterText);
+        gv.setCounterText((TextView) findViewById(R.id.shakeWeightCounterText));
         counterString = Integer.toString(gv.getShakes());
         //counterString = getString(R.string.times_shook) + timesShook;
+        counterText = gv.getCounterText();
         counterText.setText(counterString);
 
 
@@ -92,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 .sensibility(2.5f);//i believe that this is the force of a shake needed to be considered a "force" //i believe there are two ways to go about this, to either have it low so that it can register shakes faster thus not cheating out the player, or for it to be a harder shake sothat the phone absolutely knows when it is being shaked as it would also take more time for it to be detected
 
         shakeDetector = new ShakeDetector(options).start(this, new ShakeCallback() {
+
             @Override
             public void onShake() {
                 resetTimeElapsed();
@@ -100,13 +110,21 @@ public class MainActivity extends AppCompatActivity {
                 counterText.setText(Integer.toString(gv.getShakes()));
                 String email = gv.getAuth().getCurrentUser().getEmail();
 
-                int index;
+                int index = email.indexOf('@');
+
+
+
+
                 if(email != null) {
-                    index = email.indexOf('@');
-                    User user = new User(gv.getShakes());
+                    String username = email.substring(0,index);
+
+                    User user = new User(username,gv.getShakes());
                     //gv.getDatabaseInfo().child("users").child(email.substring(0,index)).
                       //      child("shakes").setValue(gv.getShakes());
-                    gv.getDatabaseInfo().child("users").child(email.substring(0,index)).setValue(user);
+                    String userId = gv.getAuth().getCurrentUser().getUid();
+                    gv.getDatabaseInfo().child("users").child(userId).setValue(user);
+
+
 
                 }
                 //counterText.setText("bing bong");
@@ -116,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         //IF YOU WANT JUST IN BACKGROUND
         //this.shakeDetector = new ShakeDetector(options).start(this);
         //maybe important
+
 
 
     }

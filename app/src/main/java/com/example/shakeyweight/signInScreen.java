@@ -14,12 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.shakeyweight.MainActivity;
-import com.example.shakeyweight.SignupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 public class signInScreen extends AppCompatActivity {
 
@@ -144,6 +146,22 @@ public class signInScreen extends AppCompatActivity {
                                         Toast.makeText(signInScreen.this, "wrong", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    String userId = gv.getAuth().getCurrentUser().getUid();
+                                    DatabaseReference shakesRef = gv.getDatabaseInfo().
+                                            child("users").child(userId).child("shakes");
+                                    shakesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot snapshot) {
+                                            if(snapshot.getValue() != null) {
+                                                int accountShakes = Integer.valueOf(snapshot.getValue().toString());
+                                                gv.setShakes(accountShakes);
+                                                gv.getCounterText().setText(Integer.toString(accountShakes));
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                        }
+                                    });
 
 
                                     Intent intent = new Intent(signInScreen.this, MainActivity.class);

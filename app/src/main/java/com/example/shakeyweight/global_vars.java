@@ -1,6 +1,8 @@
 package com.example.shakeyweight;
 import android.app.Application;
 import android.content.Context;
+import android.widget.TextView;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -10,8 +12,16 @@ public class global_vars extends Application{
     static int shakes;
     static int rate;
     static int amountOfShakerMod;
+    private TextView counterText;
     private FirebaseAuth auth;
     private FirebaseDatabase firebaseInstance;
+    public void setCounterText(TextView t){
+        this.counterText = t;
+
+    }
+    public TextView getCounterText(){
+        return this.counterText;
+    }
 
     public void startAuth(){
         this.auth = FirebaseAuth.getInstance();
