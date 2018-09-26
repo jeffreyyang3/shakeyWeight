@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onShake() {
                 resetTimeElapsed();
-                gv.addToShakes(1);
+                gv.addToShakes(1 + gv.getRate());
                 //counterString = getString(R.string.times_shook) + timesShook;
                 counterText.setText(Integer.toString(gv.getShakes()));
                 String email = gv.getAuth().getCurrentUser().getEmail();

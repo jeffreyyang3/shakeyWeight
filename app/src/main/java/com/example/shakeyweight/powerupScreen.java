@@ -40,7 +40,7 @@ public class powerupScreen extends AppCompatActivity {
                 addShakerMod();
                 break;
             case R.id.button1:
-                break;
+              break;
             case R.id.button2:
                 break;
             case R.id.button3:
@@ -56,9 +56,10 @@ public class powerupScreen extends AppCompatActivity {
             gv.addToAmountOfShakerMod(5);//FIXME it literally adds a 5 to the amount
             gv.addToRate(1);
             Toast.makeText(this, "Dean Rocks :D", Toast.LENGTH_SHORT).show();
+
         }
         else{
-            Toast.makeText(this, "You must have at least " + shakerModDefaultCost+gv.getAmountOfShakerMod(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You must have at least " + (shakerModDefaultCost+gv.getAmountOfShakerMod()), Toast.LENGTH_SHORT).show();
         }
 
     }
